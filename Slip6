@@ -1,0 +1,165 @@
+1. Write a Java program to accept ‘n’ integers from the user and store them in a collection.
+
+Display them in the sorted order. The collection should not accept duplicate elements. (Use a
+
+suitable collection). Search for a particular element using predefined search method in the
+
+Collection framework.
+
+import java.util.Scanner;
+
+import java.util.Set;
+
+import java.util.TreeSet;
+
+public class SortedIntegerCollection {
+
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+
+// Accept 'n' integers from the user
+
+System.out.print("Enter the number of integers (n): ");
+
+int n = scanner.nextInt();
+
+Set<Integer> integerSet = new TreeSet<>();
+
+for (int i = 0; i < n; i++) {
+
+System.out.print("Enter integer " + (i + 1) + ": ");
+
+int num = scanner.nextInt();
+
+integerSet.add(num);
+
+}
+
+// Display integers in sorted order
+
+System.out.println("Integers in sorted order: " + integerSet);
+
+// Search for a particular element
+
+System.out.print("Enter the element to search: ");
+
+int searchElement = scanner.nextInt();
+
+if (integerSet.contains(searchElement)) {
+
+System.out.println("Element " + searchElement + " is present in the collection.");
+
+} else {
+
+System.out.println("Element " + searchElement + " is not present in the collection.");
+
+}
+
+scanner.close();
+
+}
+
+}
+
+2. Write a java program to simulate traffic signal using threads.
+
+public class TrafficSignalSimulation {
+
+public static void main(String[] args) {
+
+TrafficSignal signal = new TrafficSignal();
+
+Thread redThread = new Thread(new SignalLight(signal, LightColor.RED, 5000)); // 5
+
+seconds for red light
+Thread yellowThread = new Thread(new SignalLight(signal, LightColor.YELLOW, 2000)); //
+
+2 seconds for yellow light
+
+Thread greenThread = new Thread(new SignalLight(signal, LightColor.GREEN, 5000)); // 5
+
+seconds for green light
+
+redThread.start();
+
+yellowThread.start();
+
+greenThread.start();
+
+}
+
+}
+
+enum LightColor {
+
+RED, YELLOW, GREEN
+
+}
+
+class TrafficSignal {
+
+private LightColor currentColor = LightColor.RED;
+
+public synchronized LightColor getCurrentColor() {
+
+return currentColor;
+
+}
+
+public synchronized void setCurrentColor(LightColor color) {
+
+this.currentColor = color;
+
+}
+
+}
+
+class SignalLight implements Runnable {
+
+private TrafficSignal signal;
+
+private LightColor lightColor;
+
+private int duration; // Duration in milliseconds
+
+public SignalLight(TrafficSignal signal, LightColor lightColor, int duration) {
+
+this.signal = signal;
+
+this.lightColor = lightColor;
+
+this.duration = duration;
+
+}
+
+@Override
+
+public void run() {
+
+while (true) {
+
+synchronized (signal) {
+
+signal.setCurrentColor(lightColor);
+
+
+System.out.println(lightColor + " Light is ON");
+try {
+
+signal.wait(duration);
+
+} catch (InterruptedException e) {
+
+e.printStackTrace();
+
+}
+
+System.out.println(lightColor + " Light is OFF");
+
+}
+
+}
+
+}
+
+}
