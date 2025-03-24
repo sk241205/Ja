@@ -1,0 +1,51 @@
+Write a Java Program to create the hash table that will maintain the mobile number and
+
+student name. Display the details of student using Enumeration interface
+
+import java.util.Enumeration;
+
+import java.util.Hashtable;
+
+public class StudentHashTable {
+
+public static void main(String[] args) {
+
+// Create a Hashtable to store mobile numbers and student names
+
+Hashtable<String, String> studentTable = new Hashtable<>();
+
+// Add entries to the hash table
+
+studentTable.put("1234567890", "John Doe");
+
+studentTable.put("9876543210", "Jane Smith");
+
+studentTable.put("8765432109", "Bob Johnson");
+
+// Display the details of students using Enumeration
+
+displayStudentDetails(studentTable);
+
+}
+
+private static void displayStudentDetails(Hashtable<String, String> studentTable) {
+
+System.out.println("Student Details:");
+
+Enumeration<String> mobileNumbers = studentTable.keys();
+
+while (mobileNumbers.hasMoreElements()) {
+
+String mobileNumber = mobileNumbers.nextElement();
+
+String studentName = studentTable.get(mobileNumber);
+
+System.out.println("Mobile Number: " + mobileNumber + ", Student Name: " +
+
+studentName);
+
+}
+
+}
+
+}
