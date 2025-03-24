@@ -1,0 +1,82 @@
+2)Write a Java program to display information about all columns in the DONAR table using
+
+ResultSetMetaData
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+
+import java.sql.ResultSetMetaData;
+
+import java.sql.SQLException;
+
+public class DisplayTableColumns {
+
+private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/your_database"; //
+
+Replace with your database URL
+
+private static final String USERNAME = "your_username"; // Replace with your database
+
+username
+
+private static final String PASSWORD = "your_password"; // Replace with your database
+
+password
+
+public static void main(String[] args) {
+
+try (Connection connection = DriverManager.getConnection(DATABASE_URL,
+
+USERNAME, PASSWORD)) {
+
+String selectQuery = "SELECT * FROM DONAR"; // Assuming DONAR is the table
+
+name
+
+try (PreparedStatement preparedStatement =
+
+connection.prepareStatement(selectQuery);
+
+ResultSet resultSet = preparedStatement.executeQuery()) {
+ResultSetMetaData metaData = resultSet.getMetaData();
+
+int columnCount = metaData.getColumnCount();
+
+System.out.println("Information about columns in the DONAR table:");
+
+for (int i = 1; i <= columnCount; i++) {
+
+System.out.println("Column " + i + ":");
+
+System.out.println(" Name: " + metaData.getColumnName(i));
+
+System.out.println(" Type: " + metaData.getColumnTypeName(i));
+
+System.out.println(" Size: " + metaData.getColumnDisplaySize(i));
+
+System.out.println(" Nullable: " + (metaData.isNullable(i) ==
+
+ResultSetMetaData.columnNoNulls ? "No" : "Yes"));
+
+System.out.println(" Auto Increment: " + metaData.isAutoIncrement(i));
+
+System.out.println("---------------------------");
+
+}
+
+}
+
+} catch (SQLException e) {
+
+e.printStackTrace();
+
+}
+
+}
+
+}
