@@ -1,0 +1,61 @@
+1. Write a Java program to display the Current Date using spring.
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class MainApp {
+
+public static void main(String[] args) {
+
+ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+DateService dateService = context.getBean(DateService.class);
+
+String currentDate = dateService.getCurrentDate();
+
+System.out.println("Current Date: " + currentDate);
+
+}
+
+}
+
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.context.annotation.Configuration;
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
+@Configuration
+
+public class AppConfig {
+
+@Bean
+
+public DateService dateService() {
+
+return new DateService();
+
+}
+
+}
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
+public class DateService {
+
+public String getCurrentDate() {
+
+Date currentDate = new Date();
+
+SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+return dateFormat.format(currentDate);
+
+}
+
+}
