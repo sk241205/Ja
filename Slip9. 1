@@ -1,0 +1,90 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class BallMover extends JFrame {
+    private BallPanel ballPanel;
+    private JButton startButton;
+    private Thread ballThread;
+
+    public BallMover() {
+        setTitle("Ball Mover");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLayout(new BorderLayout());
+
+        ballPanel = new BallPanel();
+        add(ballPanel, BorderLayout.CENTER);
+
+        startButton = new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ballThread == null || !ballThread.isAlive()) {
+                    ballPanel.resetBallPosition();
+                    ballThread = new Thread(ballPanel);
+                    ballThread.start();
+                }
+            }
+        });
+
+        add(startButton, BorderLayout.SOUTH);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            BallMover frame = new BallMover();
+            frame.setVisible(true);
+        });
+    }
+}
+
+class BallPanel extends JPanel implements Runnable {
+    private int ballY;
+    private int ballDiameter = 30;
+    private boolean movingDown = true;
+
+    public BallPanel() {
+        setBackground(Color.WHITE);
+        ballY = 0;
+    }
+
+    public void resetBallPosition() {
+        ballY = 0;
+        movingDown = true;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.RED);
+        g.fillOval(getWidth() / 2 - ballDiameter / 2, ballY, ballDiameter, ballDiameter);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            if (movingDown) {
+                ballY += 5;
+                if (ballY + ballDiameter >= getHeight()) {
+                    movingDown = false;
+                }
+            } else {
+                ballY -= 5;
+                if (ballY <= 0) {
+                    movingDown = true;
+                }
+            }
+
+            repaint();
+
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
