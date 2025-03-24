@@ -1,0 +1,64 @@
+2). Write a Java program using Spring to display the message “If you can't explain it simply, you
+
+don't understand it well enough”.
+
+public class MessageService {
+
+private String message;
+
+public void setMessage(String message) {
+
+this.message = message;
+
+}
+
+public String getMessage() {
+
+return message;
+
+}
+
+}
+
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+
+public class AppConfig {
+
+@Bean
+
+public MessageService messageService() {
+
+MessageService messageService = new MessageService();
+
+messageService.setMessage("If you can't explain it simply, you don't understand it well
+
+enough.");
+
+return messageService;
+
+}
+
+}
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+public class MainApp {
+
+public static void main(String[] args) {
+
+ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+MessageService messageService = context.getBean(MessageService.class);
+
+String message = messageService.getMessage();
+
+System.out.println(message);
+
+}
+
+}
