@@ -1,0 +1,178 @@
+1. Write a java program that implements a multi-thread application that has three threads. First
+
+thread generates random integer number after every one second, if the number is even; second
+
+thread computes the square of that number and print it. If the number is odd, the third thread
+
+computes the of cube of that number and print it.
+
+import java.util.Random;
+
+public class MultiThreadApplication {
+
+public static void main(String[] args) {
+
+NumberGenerator generator = new NumberGenerator();
+
+SquareCalculator squareCalculator = new SquareCalculator(generator);
+
+CubeCalculator cubeCalculator = new CubeCalculator(generator);
+
+Thread generatorThread = new Thread(generator);
+
+Thread squareThread = new Thread(squareCalculator);
+
+Thread cubeThread = new Thread(cubeCalculator);
+
+generatorThread.start();
+
+squareThread.start();
+
+cubeThread.start();
+
+}
+
+}
+
+class NumberGenerator implements Runnable {
+
+private Random random = new Random();
+
+@Override
+
+public void run() {
+
+try {
+
+while (true) {
+
+int randomNumber = getRandomNumber();
+
+System.out.println("Generated number: " + randomNumber);
+
+if (randomNumber % 2 == 0) {
+
+SquareCalculator.setNumber(randomNumber);
+
+} else {
+
+CubeCalculator.setNumber(randomNumber);
+
+}
+
+Thread.sleep(1000);
+
+}
+
+} catch (InterruptedException e) {
+
+e.printStackTrace();
+
+}
+
+}
+
+private int getRandomNumber() {
+
+return random.nextInt(100);
+
+}
+
+}
+
+class SquareCalculator implements Runnable {
+
+private static int number;
+
+private NumberGenerator generator;
+
+public SquareCalculator(NumberGenerator generator) {
+
+this.generator = generator;
+
+}
+
+public static void setNumber(int num) {
+
+number = num;
+
+}
+
+@Override
+
+public void run() {
+
+try {
+
+while (true) {
+
+synchronized (this) {
+
+wait();
+
+int square = number * number;
+
+
+System.out.println("Square of " + number + ": " + square);
+
+}
+
+}
+
+} catch (InterruptedException e) {
+
+e.printStackTrace();
+
+}
+
+}
+
+}
+
+class CubeCalculator implements Runnable {
+
+private static int number;
+
+private NumberGenerator generator;
+
+public CubeCalculator(NumberGenerator generator) {
+
+this.generator = generator;
+
+}
+
+public static void setNumber(int num) {
+
+number = num;
+
+}
+
+@Override
+
+public void run() {
+
+try {
+
+while (true) {
+
+synchronized (this) {
+
+wait();
+
+int cube = number * number * number;
+
+System.out.println("Cube of " + number + ": " + cube);
+
+}
+
+}
+
+} catch (InterruptedException e) {
+
+e.printStackTrace();
+
+}
+
+}
+
+}
