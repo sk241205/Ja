@@ -1,0 +1,173 @@
+Create a JSP page to accept a number from a user and display it in words: Example: 123 –
+
+One Two Three. The output should be in red color
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+
+pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Number to Words</title>
+
+</head>
+
+<body>
+
+<form action="" method="post">
+
+Enter a number: <input type="text" name="number" required>
+
+<input type="submit" value="Submit">
+
+</form>
+
+<%
+
+// Process the form submission
+
+if (request.getMethod().equalsIgnoreCase("POST")) {
+
+// Get the number from the form
+
+String numberStr = request.getParameter("number");
+
+// Display the number in words in red color
+
+if (numberStr != null && !numberStr.isEmpty()) {
+
+int number = Integer.parseInt(numberStr);
+
+String numberInWords = convertToWords(number);
+
+// Display the result in red color
+
+%>
+
+<p style="color: red;"><strong><%= numberInWords %></strong></p>
+
+<%
+
+}
+
+}
+
+// Method to convert number to words
+
+String convertToWords(int number) {
+
+// Implement your logic to convert the number to words here
+
+// For simplicity, a basic example is provided
+
+// You may need to implement a more sophisticated logic based on your requirements
+
+// Basic example mapping digits to words
+
+String[] words = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+
+"Nine"};
+
+StringBuilder result = new StringBuilder();
+
+while (number > 0) {
+
+int digit = number % 10;
+
+result.insert(0, words[digit] + " ");
+
+number /= 10;
+
+}
+
+return result.toString().trim();
+
+}
+
+%>
+
+</body>
+
+</html>
+
+2. Write a java program to blink image on the JFrame continuously
+
+import javax.swing.*;
+
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+public class BlinkingImage extends JFrame {
+
+private ImageIcon imageIcon;
+
+private JLabel imageLabel;
+
+private Timer timer;
+
+public BlinkingImage() {
+
+// Load the image icon
+
+imageIcon = new ImageIcon("path/to/your/image.png");
+
+imageLabel = new JLabel(imageIcon);
+
+// Set up the JFrame
+
+setTitle("Blinking Image");
+
+setSize(300, 300);
+
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+// Add the image label to the JFrame
+
+add(imageLabel);
+
+// Create a Timer to toggle the visibility of the image
+
+timer = new Timer(500, new ActionListener() {
+
+private boolean visible = true;
+
+@Override
+
+public void actionPerformed(ActionEvent e) {
+
+// Toggle the visibility of the image
+
+imageLabel.setVisible(visible);
+
+visible = !visible;
+
+}
+
+});
+
+// Start the timer to blink the image
+
+timer.start();
+
+}
+
+public static void main(String[] args) {
+
+SwingUtilities.invokeLater(() -> {
+
+new BlinkingImage().setVisible(true);
+
+});
+
+}
+
+}
