@@ -1,0 +1,146 @@
+Write a java program to scroll the text from left to right continuously
+
+import javax.swing.*;
+
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+public class TextScrolling extends JFrame {
+
+private final String textToScroll = "This is a scrolling text! ";
+
+private int scrollPosition = 0;
+
+public TextScrolling() {
+
+setTitle("Text Scrolling");
+
+setSize(400, 100);
+
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+Timer timer = new Timer(100, new ActionListener() {
+
+@Override
+
+public void actionPerformed(ActionEvent e) {
+
+scrollPosition++;
+
+repaint();
+
+}
+
+});
+
+timer.start();
+
+}
+
+@Override
+
+public void paint(Graphics g) {
+
+super.paint(g);
+
+g.drawString(textToScroll, getWidth() - scrollPosition, getHeight() / 2);
+
+if (scrollPosition >= getWidth()) {
+
+scrollPosition = 0;
+
+}
+
+}
+
+public static void main(String[] args) {
+
+SwingUtilities.invokeLater(() -> {
+
+TextScrolling textScrolling = new TextScrolling();
+
+textScrolling.setVisible(true);
+
+});
+
+}
+
+}
+
+2. Write a JSP script to accept username and password from user, if they are same then display
+
+“Login Successfully” message in Login.html file, otherwise display “Login Failed” Message in
+
+Error.html file.
+
+<%@ page import="java.io.*" %>
+
+<%@ page import="java.util.*" %>
+
+<%
+
+
+
+String username = request.getParameter("username");
+
+String password = request.getParameter("password");
+
+
+if (username != null && password != null && username.equals(password)) {
+
+
+
+response.sendRedirect("Login.html");
+
+} else {
+
+// Login failed
+
+response.sendRedirect("Error.html");
+
+}
+
+%>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Login Successfully</title>
+
+</head>
+
+<body>
+
+<h2>Login Successfully</h2>
+
+<p>Welcome, <%= request.getParameter("username") %>!</p>
+
+</body>
+
+</html>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Login Failed</title>
+
+</head>
+
+<body>
+
+<h2>Login Failed</h2>
+
+<p>Invalid username or password. Please try again.</p>
+
+</body>
+
+</html>
