@@ -1,0 +1,80 @@
+Write a JSP program to accept Name and Age of Voter and check whether he is eligible for
+
+voting or not.
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Voter Eligibility Checker</title>
+
+</head>
+
+<body>
+
+<h2>Voter Eligibility Checker</h2>
+
+<form action="CheckEligibility.jsp" method="post">
+
+Enter your name: <input type="text" name="name" required><br>
+
+Enter your age: <input type="text" name="age" required><br>
+
+<input type="submit" value="Check Eligibility">
+
+</form>
+
+</body>
+
+</html>
+
+<%@ page import="java.io.*" %>
+
+<%@ page import="java.util.*" %>
+<%
+
+// Get name and age from request parameters
+
+String name = request.getParameter("name");
+
+String ageStr = request.getParameter("age");
+
+// Check if age is a valid number
+
+try {
+
+int age = Integer.parseInt(ageStr);
+
+// Check eligibility based on age criterion (e.g., 18 years or older)
+
+if (age >= 18) {
+
+// Eligible for voting
+
+out.println("<h2>Hello " + name + "!</h2>");
+
+out.println("<p>Congratulations! You are eligible for voting.</p>");
+
+} else {
+
+// Not eligible for voting
+
+out.println("<h2>Hello " + name + "!</h2>");
+
+out.println("<p>Sorry! You are not eligible for voting.</p>");
+
+}
+
+} catch (NumberFormatException e) {
+
+// Handle the case where age is not a valid number
+
+out.println("<h2>Error!</h2>");
+
+out.println("<p>Please enter a valid age.</p>");
+
+}
+
+%>
